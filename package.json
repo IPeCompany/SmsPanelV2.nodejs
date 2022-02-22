@@ -1,7 +1,7 @@
 {
   "name": "@cryptommer/smsir",
   "version": "1.0.0",
-  "description": " This is Offictial sms.ir npm package",
+  "description": " This is Official sms.ir npm package",
   "main": "index.js",
   "repository": {
     "type": "git",

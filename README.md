@@ -8,7 +8,7 @@ npm i @cryptommer/smsir
 
 ## Usage
 ```javascript
-const {Smsir} = require('cryptommer/smsir')
+const {Smsir} = require('@cryptommer/smsir')
 const smsir = new Smsir()
 ```
 
