@@ -1,0 +1,26 @@
+{
+  "name": "@cryptommer/smsir",
+  "version": "1.0.0",
+  "description": " This is Offictial sms.ir npm package",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptommer/node-smsir.git"
+  },
+  "keywords": [
+    "sms.ir",
+    "messageing",
+    "sms",
+    "npm"
+  ],
+  "author": "Pouya Biglari",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cryptommer/node-smsir/issues"
+  },
+  "homepage": "https://github.com/cryptommer/node-smsir#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0"
+  }
+}
