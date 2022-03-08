@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/cryptommer/node-smsir#readme",
   "dependencies": {
-    "axios": "^0.26.0",
-    "dotenv": "^16.0.0"
+    "axios": "^0.26.0"
   }
 }

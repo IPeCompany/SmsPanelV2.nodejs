@@ -1,9 +1,20 @@
 const axios = require('axios');
-require('dotenv').config();
-const { SMSIR_API_KEY, SMSIR_LineNumber } = process.env
 const ENDPOINT = 'https://api.sms.ir'
+let SMSIR_API_KEY
+let SMSIR_LineNumber
 
 class Smsir {
+
+  /**
+   *
+   * @param {string} apikey
+   * @param {number} linenumber
+   */
+  constructor(apikey, linenumber) {
+    SMSIR_API_KEY = apikey
+    SMSIR_LineNumber = linenumber
+  }
+
   /**
    *
    * @param {string} MessageText
@@ -41,7 +52,7 @@ class Smsir {
   async SendLikeToLike(MessageTexts, Mobiles, SendDateTime = null, line_number = null) {
     return axios({
       method: "POST",
-      url: `${ENDPOINT}/v1/send/bulk`,
+      url: `${ENDPOINT}/v1/send/liketolike`,
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
@@ -170,7 +181,7 @@ class Smsir {
   async ReportArchived(fromDate= null , toDate= null, pageSize= 10, pageNumber= 1) {
     return axios({
       method: "GET",
-      url: `${ENDPOINT}/v1/send/live/`,
+      url: `${ENDPOINT}/v1/send/archive/`,
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
@@ -194,7 +205,7 @@ class Smsir {
   async ReportLatestReceived(count = 100) {
     return axios({
       method: "GET",
-      url: `${ENDPOINT}/v1/send/receive/latest`,
+      url: `${ENDPOINT}/v1/receive/latest`,
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
@@ -217,7 +228,7 @@ class Smsir {
   async ReportTodayReceived(pageSize = 10, pageNumber = 1) {
     return axios({
       method: "GET",
-      url: `${ENDPOINT}/v1/send/receive/live`,
+      url: `${ENDPOINT}/v1/receive/live`,
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
@@ -243,7 +254,7 @@ class Smsir {
   async ReportArchivedReceived(fromDate= null , toDate= null, pageSize= 10, pageNumber= 1) {
     return axios({
       method: "GET",
-      url: `${ENDPOINT}/v1/send/receive/live`,
+      url: `${ENDPOINT}/v1/receive/archive`,
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',

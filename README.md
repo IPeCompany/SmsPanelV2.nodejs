@@ -12,6 +12,12 @@ const {Smsir} = require('@cryptommer/smsir')
 const smsir = new Smsir()
 ```
 
+Add these lines to env file
+```
+SMSIR_API_KEY=
+SMSIR_LineNumber=
+```
+
 ### Send Bulk
 Send message to multiple mobile numbers
 
