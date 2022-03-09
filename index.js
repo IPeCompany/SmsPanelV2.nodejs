@@ -30,7 +30,7 @@ class Smsir {
       headers: {
         "X-API-KEY": SMSIR_API_KEY,
         'ACCEPT': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       data: {
         lineNumber: line_number ?? SMSIR_LineNumber,
@@ -56,7 +56,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         lineNumber: line_number??SMSIR_LineNumber,
@@ -80,7 +80,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       }
     })
 
@@ -100,7 +100,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         Mobile,
@@ -123,7 +123,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       }
     })
 
@@ -141,7 +141,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       }
     })
 
@@ -160,7 +160,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         pageSize,
@@ -185,7 +185,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         fromDate,
@@ -209,7 +209,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         count
@@ -232,7 +232,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         pageSize,
@@ -258,7 +258,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       },
       data: {
         fromDate,
@@ -282,7 +282,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       }
     })
 
@@ -300,7 +300,7 @@ class Smsir {
       headers: {
         "X-API-KEY" : SMSIR_API_KEY,
         'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
       }
     })
 

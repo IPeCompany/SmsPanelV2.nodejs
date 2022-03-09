@@ -7,15 +7,25 @@ npm i @cryptommer/smsir
 ```
 
 ## Usage
+- Express, Node.js, etc
 ```javascript
 const {Smsir} = require('@cryptommer/smsir')
-const smsir = new Smsir()
+/**
+ *
+ * @param {string} api_key
+ * @param {int} line_number
+ */
+const smsir = new Smsir(api_key, line_number)
 ```
-
-Add these lines to env file
-```
-SMSIR_API_KEY=
-SMSIR_LineNumber=
+- Vue.js, React.js, Angular, etc
+```javascript
+import {Smsir} from '@cryptommer/smsir'
+/**
+ *
+ * @param {string} api_key
+ * @param {int} line_number
+ */
+const smsir = new Smsir(api_key, line_number)
 ```
 
 ### Send Bulk
