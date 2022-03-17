@@ -33,7 +33,7 @@ class Smsir {
         'Content-Type': 'application/json',
       },
       data: {
-        lineNumber: line_number ?? SMSIR_LineNumber,
+        lineNumber: line_number ? line_number : SMSIR_LineNumber,
         MessageText,
         Mobiles,
         SendDateTime
@@ -59,7 +59,7 @@ class Smsir {
         'Content-Type' : 'application/json',
       },
       data: {
-        lineNumber: line_number??SMSIR_LineNumber,
+        lineNumber: line_number ? line_number : SMSIR_LineNumber,
         MessageTexts,
         Mobiles,
         SendDateTime
