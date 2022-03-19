@@ -3,13 +3,13 @@ sms.ir node.js package
 
 ## Installation
 ```
-npm i @cryptommer/smsir
+import {Smsir} from 'smsir-js'
 ```
 
 ## Usage
 - Express, Node.js, etc
 ```javascript
-const {Smsir} = require('@cryptommer/smsir')
+const {Smsir} = require('smsir-js')
 /**
  *
  * @param {string} api_key
@@ -17,9 +17,9 @@ const {Smsir} = require('@cryptommer/smsir')
  */
 const smsir = new Smsir(api_key, line_number)
 ```
-- Vue.js, React.js, Angular, etc
+- Vue.js, React.js, etc
 ```javascript
-import {Smsir} from '@cryptommer/smsir'
+import {Smsir} from 'smsir-js'
 /**
  *
  * @param {string} api_key
@@ -205,6 +205,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Credits
 
+-   [IPE Company](https://github.com/IPeCompany)
 -   [Pouya Biglari](https://github.com/cryptommer)
 
 ## License
