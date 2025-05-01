@@ -1,25 +1,74 @@
-{
-  "name": "smsir-js",
-  "version": "1.3.1",
-  "description": " This is Official sms.ir npm package",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/IPeCompany/SmsPanelV2.nodejs"
-  },
-  "keywords": [
-    "sms.ir",
-    "messageing",
-    "sms",
-    "npm"
-  ],
-  "author": "Pouya Biglari",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/IPeCompany/SmsPanelV2.nodejs/issues"
-  },
-  "homepage": "https://sms.ir/",
-  "dependencies": {
-    "axios": "^0.26.0"
+// index.js - Cleaned and optimized sms.ir npm package
+
+const axios = require('axios');
+
+class SmsIr {
+  constructor({ apiKey, secretKey, lineNumber }) {
+    if (!apiKey || !secretKey || !lineNumber) {
+      throw new Error('apiKey, secretKey, and lineNumber are required.');
+    }
+    this.apiKey = apiKey;
+    this.secretKey = secretKey;
+    this.lineNumber = lineNumber;
+    this.token = null;
+    this.tokenExpiresAt = 0;
+  }
+
+  async _fetchToken() {
+    const response = await axios.post('https://api.sms.ir/users/v1/Token/GetToken', {
+      UserApiKey: this.apiKey,
+      SecretKey: this.secretKey,
+    });
+
+    const tokenKey = response?.data?.TokenKey;
+    if (!tokenKey) {
+      throw new Error('Failed to retrieve token.');
+    }
+
+    this.token = tokenKey;
+    this.tokenExpiresAt = Date.now() + 30 * 60 * 1000; // 30 minutes
+    return this.token;
+  }
+
+  async _getToken() {
+    if (this.token && Date.now() < this.tokenExpiresAt) {
+      return this.token;
+    }
+    try {
+      return await this._fetchToken();
+    } catch (err) {
+      throw new Error(`Token retrieval error: ${err.message}`);
+    }
+  }
+
+  async send({ mobile, message }) {
+    if (!mobile || !message) {
+      throw new Error('Both mobile and message are required.');
+    }
+
+    const token = await this._getToken();
+    const url = 'https://api.sms.ir/users/v1/Message/SendByMobileNumbers';
+
+    const body = {
+      MobileNumbers: [mobile],
+      Messages: [message],
+      LineNumber: this.lineNumber,
+      SendDateTime: '',
+      CanContinueInCaseOfError: 'false',
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-sms-ir-secure-token': token,
+    };
+
+    try {
+      const { data } = await axios.post(url, body, { headers });
+      return data;
+    } catch (err) {
+      throw new Error(`Failed to send SMS: ${err.message}`);
+    }
   }
 }
+
+module.exports = SmsIr;
