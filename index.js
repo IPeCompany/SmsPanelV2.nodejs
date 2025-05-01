@@ -1,312 +1,106 @@
 const axios = require('axios');
-const ENDPOINT = 'https://api.sms.ir'
-let SMSIR_API_KEY
-let SMSIR_LineNumber
+
+const BASE_URL = 'https://api.sms.ir';
 
 class Smsir {
-
-  /**
-   *
-   * @param {string} apikey
-   * @param {number} linenumber
-   */
-  constructor(apikey, linenumber) {
-    SMSIR_API_KEY = apikey
-    SMSIR_LineNumber = linenumber
+  constructor(apiKey, lineNumber) {
+    if (!apiKey || !lineNumber) throw new Error('API key and line number are required.');
+    this.apiKey = apiKey;
+    this.lineNumber = lineNumber;
   }
 
-  /**
-   *
-   * @param {string} MessageText
-   * @param {array<string>} Mobiles
-   * @param {number|null} SendDateTime
-   * @param {int|null} line_number
-   * @constructor
-   */
-  async SendBulk(MessageText, Mobiles, SendDateTime = null, line_number = null) {
-    return axios({
-      method: "POST",
-      url: `${ENDPOINT}/v1/send/bulk`,
-      headers: {
-        "X-API-KEY": SMSIR_API_KEY,
-        'ACCEPT': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        lineNumber: line_number ? line_number : SMSIR_LineNumber,
-        MessageText,
-        Mobiles,
-        SendDateTime
-      }
-    })
+  _getHeaders() {
+    return {
+      'X-API-KEY': this.apiKey,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
   }
 
-  /**
-   *
-   * @param {array<string>} MessageTexts
-   * @param {array<string>} Mobiles
-   * @param {number|null} SendDateTime
-   * @param {int|null} line_number
-   * @constructor
-   */
-  async SendLikeToLike(MessageTexts, Mobiles, SendDateTime = null, line_number = null) {
-    return axios({
-      method: "POST",
-      url: `${ENDPOINT}/v1/send/liketolike`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        lineNumber: line_number ? line_number : SMSIR_LineNumber,
-        MessageTexts,
-        Mobiles,
-        SendDateTime
-      }
-    })
-
+  _get(url, params = {}) {
+    return axios.get(`${BASE_URL}${url}`, {
+      headers: this._getHeaders(),
+      params
+    });
   }
 
-  /**
-   *
-   * @param {string} PackId
-   * @constructor
-   */
-  async deleteScheduled(PackId) {
-    return axios({
-      method: "DELETE",
-      url: `${ENDPOINT}/v1/send/scheduled/${PackId}`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      }
-    })
-
+  _post(url, data = {}) {
+    return axios.post(`${BASE_URL}${url}`, data, {
+      headers: this._getHeaders()
+    });
   }
 
-  /**
-   *
-   * @param {string} Mobile
-   * @param {int} TemplateId
-   * @param {array<object>}Parameters
-   * @constructor
-   */
-  async SendVerifyCode(Mobile, TemplateId, Parameters) {
-    return axios({
-      method: "POST",
-      url: `${ENDPOINT}/v1/send/verify/`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        Mobile,
-        TemplateId,
-        Parameters
-      }
-    })
-
+  _delete(url) {
+    return axios.delete(`${BASE_URL}${url}`, {
+      headers: this._getHeaders()
+    });
   }
 
-  /**
-   *
-   * @param {int} MessageId
-   * @constructor
-   */
-  async ReportMessage(MessageId) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/send/${MessageId}`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      }
-    })
-
+  async sendBulk(message, mobiles, sendDateTime = null, lineNumber = null) {
+    return this._post('/v1/send/bulk', {
+      lineNumber: lineNumber || this.lineNumber,
+      MessageText: message,
+      Mobiles: mobiles,
+      SendDateTime: sendDateTime
+    });
   }
 
-  /**
-   *
-   * @param {string} PackId
-   * @constructor
-   */
-  async ReportPack(PackId) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/send/pack/${PackId}`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      }
-    })
-
+  async sendLikeToLike(messages, mobiles, sendDateTime = null, lineNumber = null) {
+    return this._post('/v1/send/liketolike', {
+      lineNumber: lineNumber || this.lineNumber,
+      MessageTexts: messages,
+      Mobiles: mobiles,
+      SendDateTime: sendDateTime
+    });
   }
 
-  /**
-   *
-   * @param {number} pageSize
-   * @param {number} pageNumber
-   * @constructor
-   */
-  async ReportToday(pageSize = 10, pageNumber = 1) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/send/live/`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        pageSize,
-        pageNumber,
-      }
-    })
-
+  async deleteScheduled(packId) {
+    return this._delete(`/v1/send/scheduled/${packId}`);
   }
 
-  /**
-   *
-   * @param {number|null} fromDate
-   * @param {number|null} toDate
-   * @param {number} pageSize
-   * @param {number} pageNumber
-   * @constructor
-   */
-  async ReportArchived(fromDate= null , toDate= null, pageSize= 10, pageNumber= 1) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/send/archive/`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        fromDate,
-        toDate,
-        pageSize,
-        pageNumber,
-      }
-    })
-
+  async sendVerifyCode(mobile, templateId, parameters) {
+    return this._post('/v1/send/verify/', {
+      Mobile: mobile,
+      TemplateId: templateId,
+      Parameters: parameters
+    });
   }
 
-  /**
-   *
-   * @param {number} count
-   * @constructor
-   */
-  async ReportLatestReceived(count = 100) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/receive/latest`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        count
-      }
-    })
-
+  async reportMessage(messageId) {
+    return this._get(`/v1/send/${messageId}`);
   }
 
-  /**
-   *
-   * @param {number} pageSize
-   * @param {number} pageNumber
-   * @returns {Promise<any>}
-   * @constructor
-   */
-  async ReportTodayReceived(pageSize = 10, pageNumber = 1) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/receive/live`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        pageSize,
-        pageNumber,
-      }
-    })
-
+  async reportPack(packId) {
+    return this._get(`/v1/send/pack/${packId}`);
   }
 
-  /**
-   *
-   * @param {number|null} fromDate
-   * @param {number|null} toDate
-   * @param {number} pageSize
-   * @param {number} pageNumber
-   * @returns {Promise<any>}
-   * @constructor
-   */
-  async ReportArchivedReceived(fromDate= null , toDate= null, pageSize= 10, pageNumber= 1) {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/receive/archive`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      data: {
-        fromDate,
-        toDate,
-        pageSize,
-        pageNumber,
-      }
-    })
-
+  async reportToday(pageSize = 10, pageNumber = 1) {
+    return this._get('/v1/send/live/', { pageSize, pageNumber });
   }
 
-  /**
-   *
-   * @returns {Promise<any>}
-   * @constructor
-   */
+  async reportArchived(fromDate = null, toDate = null, pageSize = 10, pageNumber = 1) {
+    return this._get('/v1/send/archive/', { fromDate, toDate, pageSize, pageNumber });
+  }
+
+  async reportLatestReceived(count = 100) {
+    return this._get('/v1/receive/latest', { count });
+  }
+
+  async reportTodayReceived(pageSize = 10, pageNumber = 1) {
+    return this._get('/v1/receive/live', { pageSize, pageNumber });
+  }
+
+  async reportArchivedReceived(fromDate = null, toDate = null, pageSize = 10, pageNumber = 1) {
+    return this._get('/v1/receive/archive', { fromDate, toDate, pageSize, pageNumber });
+  }
+
   async getCredit() {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/credit`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      }
-    })
-
+    return this._get('/v1/credit');
   }
 
-  /**
-   *
-   * @returns {Promise<any>}
-   * @constructor
-   */
   async getLineNumbers() {
-    return axios({
-      method: "GET",
-      url: `${ENDPOINT}/v1/line`,
-      headers: {
-        "X-API-KEY" : SMSIR_API_KEY,
-        'ACCEPT' : 'application/json',
-        'Content-Type' : 'application/json',
-      }
-    })
-
+    return this._get('/v1/line');
   }
 }
 
-module.exports = {
-  Smsir
-}
+module.exports = { Smsir };
