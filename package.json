@@ -20,6 +20,6 @@
   },
   "homepage": "https://sms.ir/",
   "dependencies": {
-    "axios": "^0.26.0"
+    "axios": "^1.7.5"
   }
 }
